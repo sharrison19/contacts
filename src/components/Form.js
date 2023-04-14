@@ -4,7 +4,7 @@ import { addContact } from "../actions/index";
 import { useState } from "react";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import { BrowserRouter as Router, Link, useLocation } from "react-router-dom";
+import { BrowserRouter as useLocation } from "react-router-dom";
 
 function mapDispatchToProps(dispatch) {
   return {

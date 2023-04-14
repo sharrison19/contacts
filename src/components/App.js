@@ -1,15 +1,20 @@
 import React from "react";
 import List from "./List";
 import Form from "./Form";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Navbar from "./NavBar";
+import { Route, Routes } from "react-router-dom";
+import EditContact from "./EditContact";
 
 const App = () => (
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<List />} />
-      <Route path="/form" element={<Form />} />
-    </Routes>
-  </BrowserRouter>
+  <div className="App">
+    <Navbar>
+      <Routes>
+        <Route exact path="/" component={() => <List />} />
+        <Route exact path="/form" component={() => <Form />} />
+        <Route exact path="/edit/:id" component={() => <EditContact />} />
+      </Routes>
+    </Navbar>
+  </div>
 );
 
 export default App;
