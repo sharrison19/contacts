@@ -1,6 +1,8 @@
-import { ADD_CONTACT, ADD_NEW_CONTACT } from "../constants/action-types";
-import { EDIT_CONTACT } from "../constants/action-types";
-import { DELETE_CONTACT } from "../constants/action-types";
+import {
+  ADD_CONTACT,
+  EDIT_CONTACT,
+  DELETE_CONTACT,
+} from "../constants/action-types";
 
 const initialState = {
   contacts: [],
@@ -24,15 +26,12 @@ function rootReducer(state = initialState, action) {
       };
 
     case DELETE_CONTACT:
-      const deleteFilter = state.filter((contact) =>
-        contact.id === action.payload ? null : contact
-      );
-      state = deleteFilter;
-      return state;
-    // return {
-    //   ...state,
-    //   contacts: state.contacts.filter((contact) => contact.id !== action.id),
-    // };
+      return {
+        ...state,
+        contacts: state.contacts.filter(
+          (contact) => contact.id !== action.payload.id
+        ),
+      };
 
     default:
       return state;

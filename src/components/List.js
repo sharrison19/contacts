@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteContact, editContact } from "../actions";
+import { deleteContact } from "../actions";
 import { useNavigate } from "react-router-dom";
 
 const ConnectedList = () => {
@@ -15,7 +15,7 @@ const ConnectedList = () => {
   };
 
   const handleEdit = (contact) => {
-    dispatch(editContact(contact));
+    navigate("/contact/" + contact.id);
   };
 
   return (
@@ -23,7 +23,7 @@ const ConnectedList = () => {
       <div>
         <button
           className="add-new-contact-button"
-          onClick={() => navigate("/form")}
+          onClick={() => navigate("/contact")}
         >
           Add New Contact
         </button>
@@ -39,6 +39,7 @@ const ConnectedList = () => {
               <th>Website</th>
               <th>Company</th>
               <th>Address</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -70,7 +71,7 @@ const ConnectedList = () => {
               ))
             ) : (
               <tr>
-                <td>No Contacts Added</td>
+                <td className="no-contacts">No Contacts Added</td>
               </tr>
             )}
           </tbody>

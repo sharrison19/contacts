@@ -15,3 +15,32 @@ code {
 .navbar {
   padding-left: 20px;
 }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
+  width: calc(100% / 8);
+}
+
+th {
+  background-color: #ccc;
+  font-weight: bold;
+}
+
+.add-new-contact-button {
+  display: flex;
+  margin: 10px auto 10px auto;
+  text-align: center;
+}
+
+.no-contacts {
+  width: 100%;
+  text-align: center;
+}

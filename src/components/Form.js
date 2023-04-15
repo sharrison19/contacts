@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { addContact } from "../actions/index";
+import { addContact, editContact } from "../actions/index";
 import { useState } from "react";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import { BrowserRouter as useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function mapDispatchToProps(dispatch) {
   return {
     addContact: (contact) => dispatch(addContact(contact)),
+    editContact: (contact) => dispatch(editContact(contact)),
   };
 }
 
@@ -19,12 +20,15 @@ function mapStateToProps(state) {
 }
 
 function useQuery() {
-  const { search } = useLocation();
+  const { pathname } = useLocation();
+  const id = pathname.split("/contact/")[1];
+  console.log(id);
 
-  return React.useMemo(() => new URLSearchParams(search), [search]);
+  return id;
 }
 
 const ConnectedForm = ({ addContact, contacts }) => {
+  const navigate = useNavigate();
   const [formState, setFormState] = useState({
     name: "",
     email: "",
@@ -34,27 +38,27 @@ const ConnectedForm = ({ addContact, contacts }) => {
     address: "",
   });
 
-  let query = useQuery();
-
+  let id = useQuery();
+  let contact = contacts.filter((c) => c.id == id)[0];
   useEffect(() => {
-    let id = query.get("id");
-    if (id) {
-      let contact = contacts.filter((c) => c.id == id)[0];
-      console.log(contacts);
+    if (id && contact) {
       setFormState((formState) => {
         return contact;
       });
     } else {
-      id = Date.now();
       setFormState((formState) => {
-        return { ...formState, id };
+        return { ...formState, id: Date.now() };
       });
     }
   }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    addContact(formState);
+    if (id && contact) {
+      editContact(formState);
+    } else {
+      addContact(formState);
+    }
     setFormState({
       name: "",
       email: "",
@@ -63,6 +67,7 @@ const ConnectedForm = ({ addContact, contacts }) => {
       company: "",
       address: "",
     });
+    navigate("/");
   };
 
   const handleInputChange = (event) => {
@@ -126,5 +131,3 @@ const ConnectedForm = ({ addContact, contacts }) => {
 const Form = connect(mapStateToProps, mapDispatchToProps)(ConnectedForm);
 
 export default Form;
-
-//ID, Name, Email, Phone, website, company, address
