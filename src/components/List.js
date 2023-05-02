@@ -6,23 +6,29 @@ import axios from "axios";
 
 const ConnectedList = () => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const contacts = useSelector((state) => state.contacts);
 
   useEffect(() => {
-    const promise = axios.get("http://127.0.0.1:5000/contacts");
+    const promise = axios.get("http://127.0.0.1:5000/contacts", {
+      headers: {
+        "x-auth-token": localStorage.getItem("token"),
+      },
+    });
     promise.then((res) => {
       console.log(res);
       dispatch(initContacts(res.data));
     });
   }, []);
 
-  const dispatch = useDispatch();
-
   const handleDelete = (contact) => {
     dispatch(deleteContact(contact));
     console.log(contact);
-    axios.delete("http://127.0.0.1:5000/contacts/" + contact.id);
+    axios.delete("http://127.0.0.1:5000/contacts/" + contact.id, {
+      headers: {
+        "x-auth-token": localStorage.getItem("token"),
+      },
+    });
   };
 
   const handleEdit = (contact) => {

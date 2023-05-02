@@ -22,8 +22,6 @@ function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    dispatch(userLogin(email, password));
-
     try {
       const loginPromise = axios.post("http://127.0.0.1:5000/login", {
         email,
@@ -31,6 +29,7 @@ function Login() {
       });
       loginPromise.then((res) => {
         localStorage.setItem("token", res.data.token);
+        dispatch(userLogin(email, password));
         navigate("/");
       });
     } catch (err) {

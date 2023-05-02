@@ -59,7 +59,11 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
     if (id && contact) {
       console.log(formState);
       editContact(formState);
-      axios.put("http://127.0.0.1:5000/contacts", formState);
+      axios.put("http://127.0.0.1:5000/contacts", formState, {
+        headers: {
+          "x-auth-token": localStorage.getItem("token"),
+        },
+      });
     } else {
       console.log("contact added");
       addContact(formState);

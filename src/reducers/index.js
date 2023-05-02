@@ -9,7 +9,7 @@ import {
 
 const initialState = {
   contacts: [],
-  user: {},
+  user: null,
 };
 
 function rootReducer(state = initialState, action) {
@@ -48,9 +48,10 @@ function rootReducer(state = initialState, action) {
       };
 
     case USER_LOGOUT:
+      localStorage.setItem("token", null);
       return {
         ...state,
-        user: {},
+        user: null,
       };
 
     default:
