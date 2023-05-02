@@ -5,6 +5,7 @@ import { useState } from "react";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -21,13 +22,13 @@ function mapStateToProps(state) {
 
 function useQuery() {
   const { pathname } = useLocation();
-  const id = pathname.split("/contact/")[1];
+  const id = parseInt(pathname.split("/contact/")[1]);
   console.log(id);
 
   return id;
 }
 
-const ConnectedForm = ({ addContact, contacts }) => {
+const ConnectedForm = ({ addContact, editContact, contacts }) => {
   const navigate = useNavigate();
   const [formState, setFormState] = useState({
     name: "",
@@ -42,6 +43,7 @@ const ConnectedForm = ({ addContact, contacts }) => {
   let contact = contacts.filter((c) => c.id == id)[0];
   useEffect(() => {
     if (id && contact) {
+      console.log(contact);
       setFormState((formState) => {
         return contact;
       });
@@ -50,14 +52,22 @@ const ConnectedForm = ({ addContact, contacts }) => {
         return { ...formState, id: Date.now() };
       });
     }
-  }, []);
+  }, [contact, id]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (id && contact) {
+      console.log(formState);
       editContact(formState);
+      axios.put("http://127.0.0.1:5000/contacts", formState);
     } else {
+      console.log("contact added");
       addContact(formState);
+      axios.post("http://127.0.0.1:5000/contacts", formState, {
+        headers: {
+          "x-auth-token": localStorage.getItem("token"),
+        },
+      });
     }
     setFormState({
       name: "",
@@ -131,3 +141,5 @@ const ConnectedForm = ({ addContact, contacts }) => {
 const Form = connect(mapStateToProps, mapDispatchToProps)(ConnectedForm);
 
 export default Form;
+
+//ID, Name, Email, Phone, website, company, address

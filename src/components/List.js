@@ -1,17 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteContact } from "../actions";
+import { deleteContact, initContacts } from "../actions";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const ConnectedList = () => {
   const navigate = useNavigate();
 
   const contacts = useSelector((state) => state.contacts);
 
+  useEffect(() => {
+    const promise = axios.get("http://127.0.0.1:5000/contacts");
+    promise.then((res) => {
+      console.log(res);
+      dispatch(initContacts(res.data));
+    });
+  }, []);
+
   const dispatch = useDispatch();
 
   const handleDelete = (contact) => {
     dispatch(deleteContact(contact));
+    console.log(contact);
+    axios.delete("http://127.0.0.1:5000/contacts/" + contact.id);
   };
 
   const handleEdit = (contact) => {
@@ -71,7 +82,9 @@ const ConnectedList = () => {
               ))
             ) : (
               <tr>
-                <td className="no-contacts">No Contacts Added</td>
+                <td className="no-contacts" colSpan="8">
+                  No Contacts Added
+                </td>
               </tr>
             )}
           </tbody>
