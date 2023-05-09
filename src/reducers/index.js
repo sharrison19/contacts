@@ -21,11 +21,10 @@ function rootReducer(state = initialState, action) {
       return { ...state, contacts: [...state.contacts, action.payload] };
 
     case EDIT_CONTACT:
-      console.log("test");
       return {
         ...state,
         contacts: state.contacts.map((contact) => {
-          if (contact.id == action.payload.id) {
+          if (contact.id === action.payload.id) {
             return action.payload;
           } else {
             return contact;

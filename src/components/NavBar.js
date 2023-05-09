@@ -1,49 +1,47 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { userLogout } from "../actions";
 import { useDispatch } from "react-redux";
+import { userLogout } from "../actions";
 
 const Navbar = ({ isLoggedIn }) => {
   const dispatch = useDispatch();
 
-  const handleLogout = (e) => {
-    console.log("handleLogout");
-    e.preventDefault();
+  const handleLogout = (event) => {
+    event.preventDefault();
     dispatch(userLogout());
   };
 
   return (
-    <nav className="navbar navbar-expand-md navbar-dark bg-dark">
-      <Link to={"/"} className="navbar-brand ml-5">
-        Harrison Contact Book
-      </Link>
-      <div
-        className="collapse navbar-collapse justify-content-end"
-        id="navbarNav"
-      >
-        <ul className="navbar-nav">
-          {!isLoggedIn && (
-            <>
+    <nav className="navbar navbar-dark bg-dark">
+      <div className="container-fluid">
+        <Link to={"/"} className="navbar-brand">
+          Harrison Contact Book
+        </Link>
+        <div id="navbarNav">
+          <ul className="navbar-nav">
+            {!isLoggedIn && (
+              <>
+                <li className="nav-item">
+                  <Link to={"/login"} className="nav-link">
+                    Log In
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to={"/signup"} className="nav-link">
+                    Sign Up!
+                  </Link>
+                </li>
+              </>
+            )}
+            {isLoggedIn && (
               <li className="nav-item">
-                <Link to={"/login"} className="nav-link px-3">
-                  Log In
+                <Link to={"/"} onClick={handleLogout} className="nav-link">
+                  Log Out
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link to={"/signup"} className="nav-link px-3">
-                  Sign Up!
-                </Link>
-              </li>
-            </>
-          )}
-          {isLoggedIn && (
-            <li className="nav-item">
-              <Link onClick={handleLogout} className="nav-link px-3">
-                Log Out
-              </Link>
-            </li>
-          )}
-        </ul>
+            )}
+          </ul>
+        </div>
       </div>
     </nav>
   );

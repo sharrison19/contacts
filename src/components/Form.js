@@ -24,7 +24,6 @@ function useQuery() {
   const { pathname } = useLocation();
   const id = parseInt(pathname.split("/contact/")[1]);
   console.log(id);
-
   return id;
 }
 
@@ -37,10 +36,15 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
     website: "",
     company: "",
     address: "",
+    city: "",
+    state: "",
+    country: "",
+    zipcode: "",
   });
 
   let id = useQuery();
-  let contact = contacts.filter((c) => c.id == id)[0];
+  let contact = contacts.filter((c) => c.id === id)[0];
+
   useEffect(() => {
     if (id && contact) {
       console.log(contact);
@@ -80,12 +84,17 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
       website: "",
       company: "",
       address: "",
+      city: "",
+      state: "",
+      country: "",
+      zipcode: "",
     });
     navigate("/");
   };
 
   const handleInputChange = (event) => {
-    setFormState({ ...formState, [event.target.id]: event.target.value });
+    const { id, value } = event.target;
+    setFormState({ ...formState, [id]: value });
   };
 
   const handlePhoneChange = (value) => {
@@ -93,8 +102,8 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <p>{formState && formState.id}</p>
+    <form className="contact-form" onSubmit={handleSubmit}>
+      {/* <p>{formState && formState.id}</p> */}
       <input
         type="text"
         id="name"
@@ -131,13 +140,48 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
         onChange={handleInputChange}
       ></input>
       <input
-        type="input"
-        id="address"
-        placeholder="Enter Address Here"
-        value={formState.address}
+        type="text"
+        name="street"
+        id="street"
+        placeholder="Street Address"
+        value={formState.street}
         onChange={handleInputChange}
-      ></input>
-      <button type="submit">SAVE</button>
+      />
+      <input
+        type="text"
+        name="city"
+        id="city"
+        placeholder="City"
+        value={formState.city}
+        onChange={handleInputChange}
+      />
+      <input
+        type="text"
+        name="state"
+        id="state"
+        placeholder="State"
+        value={formState.state}
+        onChange={handleInputChange}
+      />
+      <input
+        type="text"
+        name="zipcode"
+        id="zipcode"
+        placeholder="Zipcode"
+        value={formState.zipcode}
+        onChange={handleInputChange}
+      />
+      <input
+        type="text"
+        name="country"
+        id="country"
+        placeholder="Country"
+        value={formState.country}
+        onChange={handleInputChange}
+      />
+      <button className="form-submit-btn" type="submit">
+        SAVE
+      </button>
     </form>
   );
 };
@@ -145,5 +189,3 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
 const Form = connect(mapStateToProps, mapDispatchToProps)(ConnectedForm);
 
 export default Form;
-
-//ID, Name, Email, Phone, website, company, address

@@ -1,5 +1,4 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -19,19 +18,17 @@ function Login() {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-      const loginPromise = axios.post("http://127.0.0.1:5000/login", {
+      const res = await axios.post("http://127.0.0.1:5000/login", {
         email,
         password,
       });
-      loginPromise.then((res) => {
-        localStorage.setItem("token", res.data.token);
-        dispatch(userLogin(email, password));
-        navigate("/");
-      });
+      localStorage.setItem("token", res.data.token);
+      dispatch(userLogin(email, password));
+      navigate("/");
     } catch (err) {
       console.error(err);
     }
@@ -41,24 +38,22 @@ function Login() {
     <form id="login-form" onSubmit={handleSubmit}>
       <div id="input-container">
         <div>
-          <label id="email-label" htmlFor="email">
-            Email:
-          </label>
+          <label htmlFor="email">Email:</label>
           <input
             type="email"
             id="email"
             value={email}
             onChange={handleEmailChange}
-          ></input>
+          />
         </div>
         <div>
           <label htmlFor="password">Password:</label>
           <input
-            type="text"
+            type="password"
             id="password"
             value={password}
             onChange={handlePasswordChange}
-          ></input>
+          />
         </div>
       </div>
       <button type="submit">Login</button>

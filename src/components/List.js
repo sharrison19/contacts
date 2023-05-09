@@ -1,30 +1,39 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteContact, initContacts } from "../actions";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const ConnectedList = () => {
+const List = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const contacts = useSelector((state) => state.contacts);
+  const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
-    const promise = axios.get("http://127.0.0.1:5000/contacts", {
-      headers: {
-        "x-auth-token": localStorage.getItem("token"),
-      },
+    const fetchContacts = async () => {
+      const response = await axios.get("http://127.0.0.1:5000/contacts", {
+        headers: {
+          "x-auth-token": localStorage.getItem("token"),
+        },
+      });
+      dispatch(initContacts(response.data));
+    };
+    fetchContacts();
+  }, [dispatch]);
+
+  useLayoutEffect(() => {
+    window.addEventListener("resize", () => {
+      setWidth(window.innerWidth);
     });
-    promise.then((res) => {
-      console.log(res);
-      dispatch(initContacts(res.data));
-    });
+    setWidth(window.innerWidth);
   }, []);
 
-  const handleDelete = (contact) => {
+  const handleDelete = async (contact) => {
     dispatch(deleteContact(contact));
-    console.log(contact);
-    axios.delete("http://127.0.0.1:5000/contacts/" + contact.id, {
+    await axios.delete(`http://127.0.0.1:5000/contacts/${contact.id}`, {
       headers: {
         "x-auth-token": localStorage.getItem("token"),
       },
@@ -32,7 +41,15 @@ const ConnectedList = () => {
   };
 
   const handleEdit = (contact) => {
-    navigate("/contact/" + contact.id);
+    navigate(`/contact/${contact.id}`);
+  };
+
+  const getAddress = (contact) => {
+    const { street, city, state, zipcode, country } = contact;
+    const addressParts = [street, city, state, zipcode, country].filter(
+      (part) => part
+    );
+    return addressParts.join(", ");
   };
 
   return (
@@ -46,60 +63,149 @@ const ConnectedList = () => {
         </button>
       </div>
       <div className="contact-table">
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone Number</th>
-              <th>Website</th>
-              <th>Company</th>
-              <th>Address</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {contacts.length > 0 ? (
-              contacts.map((contact) => (
-                <tr key={contact.id}>
-                  <td>{contact.id}</td>
-                  <td>{contact.name}</td>
-                  <td>{contact.email}</td>
-                  <td>{contact.phone}</td>
-                  <td>{contact.website}</td>
-                  <td>{contact.company}</td>
-                  <td>{contact.address}</td>
-                  <td className="edit">
+        <ul className="table">
+          {width > 700 && (
+            <li className="table-row table-headers">
+              <div className="stack">
+                {/* <div className="header-item">ID</div> */}
+                <div className="header-item">Name</div>
+              </div>
+              <div className="stack">
+                <div className="header-item">Email</div>
+                <div className="header-item">Address</div>
+              </div>
+              <div className="stack">
+                <div className="header-item">Phone</div>
+                <div className="header-item">Website</div>
+              </div>
+              <div className="header-item">Company</div>
+              <div className="header-item"></div>
+            </li>
+          )}
+          {contacts.length > 0 ? (
+            contacts.map((contact) =>
+              width > 700 ? (
+                <li className="table-row table-contact-info" key={contact.id}>
+                  <div className="stack">
+                    {/* <div className="contact-information break-all">
+                      {contact.id}
+                    </div> */}
+                    <div className="contact-information">{contact.name}</div>
+                  </div>
+                  <div className="stack">
+                    <div className="contact-information break-all">
+                      {contact.email}
+                    </div>
+                    <div className="contact-information">
+                      {getAddress(
+                        contact,
+                        contact.city,
+                        contact.state,
+                        contact.zipcode,
+                        contact.country
+                      )}
+                    </div>
+                  </div>
+                  <div className="stack">
+                    <div className="contact-information break-all">
+                      {contact.phone}
+                    </div>
+                    <div className="contact-information break-all">
+                      {contact.website}
+                    </div>
+                  </div>
+                  <div className="contact-information">{contact.company}</div>
+                  <div className="contact-information edit">
                     <button
                       className="edit-button"
                       onClick={() => handleEdit(contact)}
                     >
-                      Edit
+                      <FontAwesomeIcon icon={faEdit} /> Edit
                     </button>
                     <button
                       className="delete-button"
                       onClick={() => handleDelete(contact)}
                     >
-                      Delete
+                      <FontAwesomeIcon icon={faTrash} /> Delete
                     </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td className="no-contacts" colSpan="8">
-                  No Contacts Added
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+                  </div>
+                </li>
+              ) : (
+                <li className="table-row" key={contact.id}>
+                  {/* <div className="table-header-column">
+                    <div className="header-item">ID</div>
+                    <div className="header-item">Name</div>
+                    <div className="header-item">Email</div>
+                    <div className="header-item">Address</div>
+                    <div className="header-item">Phone Number</div>
+                    <div className="header-item">Website</div>
+                    <div className="header-item">Company</div>
+                    <div className="header-item"></div>
+                  </div> */}
+                  <div className="table-width-row">
+                    <div className="header-item">ID</div>
+                    <div className="contact-information">{contact.id}</div>
+                  </div>
+                  <div className="table-width-row">
+                    <div className="header-item">Name</div>
+                    <div className="contact-information">{contact.name}</div>
+                  </div>
+                  <div className="table-width-row">
+                    <div className="header-item">Email</div>
+                    <div className="contact-information">{contact.email}</div>
+                  </div>
+                  <div className="table-width-row">
+                    <div className="header-item">Address</div>
+                    <div className="contact-information">
+                      {getAddress(
+                        contact,
+                        contact.city,
+                        contact.state,
+                        contact.zipcode,
+                        contact.country
+                      )}
+                    </div>
+                  </div>
+                  <div className="table-width-row">
+                    <div className="header-item">Phone</div>
+                    <div className="contact-information">{contact.phone}</div>
+                  </div>
+                  <div className="table-width-row">
+                    <div className="header-item">Website</div>
+                    <div className="contact-information">{contact.website}</div>
+                  </div>
+                  <div className="table-width-row">
+                    <div className="header-item">Company</div>
+                    <div className="contact-information">{contact.company}</div>
+                  </div>
+                  <div className="contact-information edit">
+                    <button
+                      className="edit-button"
+                      onClick={() => handleEdit(contact)}
+                    >
+                      <FontAwesomeIcon icon={faEdit} /> Edit
+                    </button>
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDelete(contact)}
+                    >
+                      <FontAwesomeIcon icon={faTrash} /> Delete
+                    </button>
+                  </div>
+                </li>
+              )
+            )
+          ) : (
+            <li className="table-row">
+              <div className="no-contacts" colSpan="8">
+                No Contacts Added
+              </div>
+            </li>
+          )}
+        </ul>
       </div>
     </div>
   );
 };
-
-const List = ConnectedList;
 
 export default List;
