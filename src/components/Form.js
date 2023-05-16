@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { addContact, editContact } from "../actions/index";
 import { useState } from "react";
-import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -23,11 +21,10 @@ function mapStateToProps(state) {
 function useQuery() {
   const { pathname } = useLocation();
   const id = parseInt(pathname.split("/contact/")[1]);
-  console.log(id);
   return id;
 }
 
-const ConnectedForm = ({ addContact, editContact, contacts }) => {
+function ConnectedForm({ addContact, editContact, contacts }) {
   const navigate = useNavigate();
   const [formState, setFormState] = useState({
     name: "",
@@ -41,13 +38,14 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
     country: "",
     zipcode: "",
   });
+  const [showEmailError, setShowEmailError] = useState(false);
+  const [showPhoneError, setShowPhoneError] = useState(false);
 
   let id = useQuery();
   let contact = contacts.filter((c) => c.id === id)[0];
 
   useEffect(() => {
     if (id && contact) {
-      console.log(contact);
       setFormState((formState) => {
         return contact;
       });
@@ -60,8 +58,28 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    let isError = false;
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    if (!emailRegex.test(formState.email)) {
+      isError = true;
+      setShowEmailError(true);
+    } else {
+      setShowEmailError(false);
+    }
+
+    const phoneRegex = /^(\+\d{1,2}\s?)?1?-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/;
+    if (!phoneRegex.test(formState.phone)) {
+      isError = true;
+      setShowPhoneError(true);
+    } else {
+      setShowPhoneError(false);
+    }
+
+    if (isError) {
+      return;
+    }
+    console.log(id, contact);
     if (id && contact) {
-      console.log(formState);
       editContact(formState);
       axios.put("http://127.0.0.1:5000/contacts", formState, {
         headers: {
@@ -69,7 +87,6 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
         },
       });
     } else {
-      console.log("contact added");
       addContact(formState);
       axios.post("http://127.0.0.1:5000/contacts", formState, {
         headers: {
@@ -94,49 +111,53 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
 
   const handleInputChange = (event) => {
     const { id, value } = event.target;
-    setFormState({ ...formState, [id]: value });
-  };
 
-  const handlePhoneChange = (value) => {
-    setFormState({ ...formState, phone: value });
+    setFormState({ ...formState, [id]: value });
   };
 
   return (
     <form className="contact-form" onSubmit={handleSubmit}>
-      {/* <p>{formState && formState.id}</p> */}
       <input
         type="text"
         id="name"
-        placeholder="Enter Name Here"
-        value={formState.name}
+        placeholder="Full Name"
+        value={formState.name || ""}
         onChange={handleInputChange}
-      ></input>
+      />
+      {showEmailError && (
+        <div className="error">Please enter a valid email address</div>
+      )}
       <input
         type="text"
         id="email"
-        placeholder="Enter Email Here"
-        value={formState.email}
+        placeholder="Email"
+        value={formState.email || ""}
         onChange={handleInputChange}
-      ></input>
-      <PhoneInput
+        className={showEmailError ? "red-border" : ""}
+      />
+      {showPhoneError && (
+        <div className="error">Please enter a valid phone number</div>
+      )}
+      <input
         country="US"
         id="phone"
-        placeholder="Enter Phone Number Here"
-        value={formState.phone}
-        onChange={handlePhoneChange}
-      ></PhoneInput>
+        placeholder="Phone Number"
+        value={formState.phone || ""}
+        onChange={handleInputChange}
+        className={showPhoneError ? "red-border" : ""}
+      />
       <input
         type="input"
         id="website"
-        placeholder="Enter Website Here"
-        value={formState.website}
+        placeholder="Website"
+        value={formState.website || ""}
         onChange={handleInputChange}
       ></input>
       <input
         type="input"
         id="company"
-        placeholder="Enter Company Here"
-        value={formState.company}
+        placeholder="Company"
+        value={formState.company || ""}
         onChange={handleInputChange}
       ></input>
       <input
@@ -144,7 +165,7 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
         name="street"
         id="street"
         placeholder="Street Address"
-        value={formState.street}
+        value={formState.street || ""}
         onChange={handleInputChange}
       />
       <input
@@ -152,7 +173,7 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
         name="city"
         id="city"
         placeholder="City"
-        value={formState.city}
+        value={formState.city || ""}
         onChange={handleInputChange}
       />
       <input
@@ -160,7 +181,7 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
         name="state"
         id="state"
         placeholder="State"
-        value={formState.state}
+        value={formState.state || ""}
         onChange={handleInputChange}
       />
       <input
@@ -168,7 +189,7 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
         name="zipcode"
         id="zipcode"
         placeholder="Zipcode"
-        value={formState.zipcode}
+        value={formState.zipcode || ""}
         onChange={handleInputChange}
       />
       <input
@@ -176,15 +197,15 @@ const ConnectedForm = ({ addContact, editContact, contacts }) => {
         name="country"
         id="country"
         placeholder="Country"
-        value={formState.country}
+        value={formState.country || ""}
         onChange={handleInputChange}
       />
-      <button className="form-submit-btn" type="submit">
+      <button className="submit-btn" type="submit">
         SAVE
       </button>
     </form>
   );
-};
+}
 
 const Form = connect(mapStateToProps, mapDispatchToProps)(ConnectedForm);
 

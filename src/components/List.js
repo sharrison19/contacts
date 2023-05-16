@@ -52,6 +52,15 @@ const List = () => {
     return addressParts.join(", ");
   };
 
+  function formatPhoneNumber(phoneNumberString) {
+    const cleaned = ("" + phoneNumberString).replace(/\D/g, "");
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+      return "(" + match[1] + ") " + match[2] + "-" + match[3];
+    }
+    return null;
+  }
+
   return (
     <div className="list">
       <div>
@@ -67,18 +76,17 @@ const List = () => {
           {width > 700 && (
             <li className="table-row table-headers">
               <div className="stack">
-                {/* <div className="header-item">ID</div> */}
                 <div className="header-item">Name</div>
+                <div className="header-item">Phone</div>
               </div>
               <div className="stack">
                 <div className="header-item">Email</div>
                 <div className="header-item">Address</div>
               </div>
               <div className="stack">
-                <div className="header-item">Phone</div>
                 <div className="header-item">Website</div>
+                <div className="header-item">Company</div>
               </div>
-              <div className="header-item">Company</div>
               <div className="header-item"></div>
             </li>
           )}
@@ -87,10 +95,10 @@ const List = () => {
               width > 700 ? (
                 <li className="table-row table-contact-info" key={contact.id}>
                   <div className="stack">
-                    {/* <div className="contact-information break-all">
-                      {contact.id}
-                    </div> */}
                     <div className="contact-information">{contact.name}</div>
+                    <div className="contact-information break-all">
+                      {formatPhoneNumber(contact.phone)}
+                    </div>
                   </div>
                   <div className="stack">
                     <div className="contact-information break-all">
@@ -108,47 +116,34 @@ const List = () => {
                   </div>
                   <div className="stack">
                     <div className="contact-information break-all">
-                      {contact.phone}
-                    </div>
-                    <div className="contact-information break-all">
                       {contact.website}
                     </div>
+                    <div className="contact-information">{contact.company}</div>
                   </div>
-                  <div className="contact-information">{contact.company}</div>
                   <div className="contact-information edit">
                     <button
                       className="edit-button"
                       onClick={() => handleEdit(contact)}
                     >
-                      <FontAwesomeIcon icon={faEdit} /> Edit
+                      <FontAwesomeIcon icon={faEdit} />
                     </button>
                     <button
                       className="delete-button"
                       onClick={() => handleDelete(contact)}
                     >
-                      <FontAwesomeIcon icon={faTrash} /> Delete
+                      <FontAwesomeIcon icon={faTrash} />
                     </button>
                   </div>
                 </li>
               ) : (
                 <li className="table-row" key={contact.id}>
-                  {/* <div className="table-header-column">
-                    <div className="header-item">ID</div>
-                    <div className="header-item">Name</div>
-                    <div className="header-item">Email</div>
-                    <div className="header-item">Address</div>
-                    <div className="header-item">Phone Number</div>
-                    <div className="header-item">Website</div>
-                    <div className="header-item">Company</div>
-                    <div className="header-item"></div>
-                  </div> */}
-                  <div className="table-width-row">
-                    <div className="header-item">ID</div>
-                    <div className="contact-information">{contact.id}</div>
-                  </div>
                   <div className="table-width-row">
                     <div className="header-item">Name</div>
                     <div className="contact-information">{contact.name}</div>
+                  </div>
+                  <div className="table-width-row">
+                    <div className="header-item">Phone</div>
+                    <div className="contact-information">{contact.phone}</div>
                   </div>
                   <div className="table-width-row">
                     <div className="header-item">Email</div>
@@ -165,10 +160,6 @@ const List = () => {
                         contact.country
                       )}
                     </div>
-                  </div>
-                  <div className="table-width-row">
-                    <div className="header-item">Phone</div>
-                    <div className="contact-information">{contact.phone}</div>
                   </div>
                   <div className="table-width-row">
                     <div className="header-item">Website</div>

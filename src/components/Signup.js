@@ -7,6 +7,7 @@ import { userLogin } from "../actions";
 function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -31,6 +32,7 @@ function Signup() {
       navigate("/");
     } catch (err) {
       console.error(err);
+      setError("Email already exists. Please try again.");
     }
   };
 
@@ -45,6 +47,7 @@ function Signup() {
             value={email}
             onChange={handleEmailChange}
           />
+          {error && <p className="error">{error}</p>}
         </div>
         <div>
           <label htmlFor="password">Password:</label>

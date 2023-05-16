@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #c8caca;
 }
 
 code {
@@ -19,6 +20,7 @@ code {
 
 .navbar {
   padding: 20px 0 20px 20px;
+  background-color: #43605c !important;
 }
 
 .navbar-nav {
@@ -29,85 +31,57 @@ code {
   margin: 0 10px;
 }
 
-/* Login Signup Add New Form START*/
-#login-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 50px;
-}
+/* Login Signup Add New Form START */
 
-#login-form label {
-  margin-right: 10px;
-}
-
-#login-form input {
-  margin-bottom: 20px;
-  padding: 10px;
-  width: 250px;
-  border-radius: 5px;
-  border: none;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-}
-
-#login-form button {
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  background-color: #0077ff;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-#login-form button:hover {
-  background-color: #0054cc;
-}
-
-#signup-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 50px;
-}
-
-#signup-form label {
-  margin-right: 10px;
-}
-
-#signup-form input {
-  margin-bottom: 20px;
-  padding: 10px;
-  width: 250px;
-  border-radius: 5px;
-  border: none;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
-}
-
-#signup-form button {
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  background-color: #0077ff;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  margin-left: 10px;
-}
-
-#signup-form button:hover {
-  background-color: #0054cc;
-}
-
+#login-form,
+#signup-form,
 .contact-form {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 50px;
+}
+
+#login-form label,
+#signup-form label,
+.contact-form label {
+  margin-right: 10px;
+}
+
+#login-form input,
+#signup-form input,
+.contact-form input {
+  margin-bottom: 10px;
+  padding: 10px;
+  width: 250px;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#login-form button,
+#signup-form button,
+.submit-btn {
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #7f908e;
+  color: #1a2220;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#login-form button:hover,
+#signup-form button:hover,
+.submit-btn:hover {
+  background-color: #68817b;
+}
+
+.contact-form {
   margin: 50px auto;
   width: 50%;
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #abb9b6;
 }
 
 input,
@@ -119,16 +93,6 @@ button {
   font-size: 16px;
 }
 
-input[type="submit"] {
-  background-color: #4b8e4e;
-  color: #fff;
-  cursor: pointer;
-}
-
-input[type="submit"]:hover {
-  background-color: #3e8e41;
-}
-
 label {
   display: block;
   font-size: 16px;
@@ -137,28 +101,18 @@ label {
 }
 
 .error {
+  display: block;
   color: red;
   font-size: 14px;
-  margin-bottom: 10px;
-}
-
-.form-submit-btn {
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  background-color: #0077ff;
-  color: #fff;
+  margin-top: 4px;
   font-weight: bold;
-  cursor: pointer;
-  margin-left: 10px;
 }
 
-/* ASK ABOUT THIS */
-#phone {
-  margin-right: 40px;
+.red-border {
+  border: 2px solid red !important;
 }
 
-/* Login Signup Add New Form END*/
+/* Login Signup Add New Form END */
 
 .no-contacts {
   text-align: center;
@@ -166,10 +120,11 @@ label {
   padding: 12px;
 }
 
-/* Contact List START*/
+/* Contact List START */
 .add-new-contact-button {
-  background-color: #008cba;
-  color: white;
+  background-color: #7f908e;
+  color: #1a2220;
+  font-weight: bold;
   border: none;
   border-radius: 4px;
   padding: 10px;
@@ -183,7 +138,7 @@ label {
 }
 
 .add-new-contact-button:hover {
-  background-color: #006d85;
+  background-color: #68817b;
 }
 
 .table {
@@ -193,21 +148,21 @@ label {
 .contact-table {
   width: calc(100% - 40px);
   margin: 0 20px;
-  border: solid black 2px;
+  border: 2px solid black;
+  border-radius: 10px;
 }
 
 .table-headers {
   text-align: left;
-  padding: 12px;
   border-bottom: 1px solid #ddd;
 }
 
 .table-contact-info:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #dae0de;
 }
 
 .table-contact-info:hover {
-  background-color: #2196f3;
+  background-color: #68817b;
 }
 
 .header-item {
@@ -222,9 +177,10 @@ label {
 
 .table-row {
   display: grid;
-  grid-template-columns: 2fr 4fr 2fr 1fr 1fr;
+  grid-template-columns: 2fr 3fr 2fr 1fr;
   justify-content: space-between;
   align-items: center;
+  padding: 10px;
 }
 
 .break-all {
@@ -250,19 +206,45 @@ label {
 }
 
 .edit-button {
-  background-color: #4caf50 !important;
+  background-color: #57736c !important;
   margin-right: 10px;
 }
 
 .delete-button {
-  background-color: #f44336 !important;
+  background-color: #73575e !important;
 }
 
 @media (max-width: 700px) {
+  .navbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+  }
+
+  .navbar-brand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .navbar-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  .container-fluid {
+    display: block !important;
+  }
+
   .list {
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: 0 15px 15px 15px;
     font-family: Arial, sans-serif;
   }
 
@@ -321,148 +303,12 @@ label {
     justify-content: center;
     align-items: center;
   }
-}
 
-/* table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: 14px;
-} */
-
-/* .contact-table {
-  width: calc(100% - 100px);
-  margin: 0 50px;
-  border: solid black 2px;
-}
-
-th,
-td {
-  text-align: left;
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
-}
-
-th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-tr:hover {
-  background-color: #2196f3;
-}
-
-.list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.add-new-contact-button {
-  background-color: #2196f3;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin-bottom: 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 20px;
-}
-
-
-
-.edit-button,
-.delete-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0;
-}
-
-.edit-button,
-.delete-button {
-  background-color: #f44336;
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-  margin-right: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.edit-button:hover,
-.delete-button:hover {
-  background-color: #c62828;
-}
-
-
-.input-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-  width: 100%;
-}
-*/
-
-/* 
-.contact-information {
-  display: block;
-}
-
-.header-item {
-  display: block;
-  --column-width-min: 10em;
-}
-
-.table-row {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
-} */
-
-/* @media (max-width: 700px) {
-  .contact-information {
+  .contact-form {
     width: 100%;
-
-    overflow-wrap: anywhere;
-    word-break: break-all;
-    word-wrap: break-word;
-    display: inline-block;
-    border: solid black 1px;
-  }
-  .table-row {
-    display: block;
-  }
-  .contact-span {
-    overflow-wrap: anywhere;
-  }
-
-  .header-item {
-    min-width: 70px;
+    margin: 20px auto;
   }
 }
-
-.table-header-column {
-  display: inline-block;
-}
-
-.table-contact-column {
-  display: inline-block;
-}  */
-
-/* .add-new-contact-button {
-  display: none;
-} */
 
 @media (min-width: 1000px) {
   .stack {
@@ -470,48 +316,3 @@ tr:hover {
     grid-template-columns: 1fr 1fr;
   }
 }
-
-/* .table-width-row {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  width: 100%;
-}
-
-/* @media screen and (min-width: 768px) {
-  .table-header-column {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
-  .table-row {
-    display: table-row;
-    border-bottom: none;
-    padding: 0;
-  }
-
-  .header-item {
-    display: table-cell;
-    font-weight: bold;
-    text-align: left;
-    width: auto;
-    margin-bottom: 0;
-  }
-
-  .contact-information {
-    display: table-cell;
-    width: auto;
-  }
-
-  .edit,
-  .delete {
-    justify-content: center;
-  }
-
-  .edit-button,
-  .delete-button {
-    font-size: 16px;
-    margin-left: 20px;
-  }
-} */
