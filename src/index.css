@@ -116,6 +116,10 @@ label {
   padding: 12px;
 }
 
+.table-row-no-contacts {
+  grid-template-columns: 1fr;
+}
+
 .add-new-contact-button {
   background-color: #7f908e;
   color: #1a2220;
@@ -138,6 +142,7 @@ label {
 
 .table {
   padding: 0;
+  list-style-type: none;
 }
 
 .contact-table {
@@ -167,6 +172,11 @@ label {
 .list {
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.table-row .contact-information {
+  display: flex;
   align-items: center;
 }
 

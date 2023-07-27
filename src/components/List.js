@@ -187,8 +187,8 @@ const List = () => {
               )
             )
           ) : (
-            <li className="table-row">
-              <div className="no-contacts" colSpan="8">
+            <li className="table-row-no-contacts">
+              <div className="no-contacts" colSpan={8}>
                 No Contacts Added
               </div>
             </li>
