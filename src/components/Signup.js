@@ -23,7 +23,7 @@ function Signup() {
     event.preventDefault();
 
     try {
-      const res = await axios.post("http://127.0.0.1:5000/users", {
+      const res = await axios.post("/users", {
         email,
         password,
       });

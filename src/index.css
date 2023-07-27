@@ -31,8 +31,6 @@ code {
   margin: 0 10px;
 }
 
-/* Login Signup Add New Form START */
-
 #login-form,
 #signup-form,
 .contact-form {
@@ -112,15 +110,12 @@ label {
   border: 2px solid red !important;
 }
 
-/* Login Signup Add New Form END */
-
 .no-contacts {
   text-align: center;
   font-weight: bold;
   padding: 12px;
 }
 
-/* Contact List START */
 .add-new-contact-button {
   background-color: #7f908e;
   color: #1a2220;

@@ -18,7 +18,7 @@ const App = () => {
   useEffect(() => {
     if (token && !user) {
       axios
-        .get("http://127.0.0.1:5000/users", {
+        .get("/users", {
           headers: {
             "x-auth-token": token,
           },

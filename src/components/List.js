@@ -14,7 +14,7 @@ const List = () => {
 
   useEffect(() => {
     const fetchContacts = async () => {
-      const response = await axios.get("http://127.0.0.1:5000/contacts", {
+      const response = await axios.get("/contacts", {
         headers: {
           "x-auth-token": localStorage.getItem("token"),
         },
@@ -33,7 +33,7 @@ const List = () => {
 
   const handleDelete = async (contact) => {
     dispatch(deleteContact(contact));
-    await axios.delete(`http://127.0.0.1:5000/contacts/${contact.id}`, {
+    await axios.delete(`/contacts/${contact.id}`, {
       headers: {
         "x-auth-token": localStorage.getItem("token"),
       },

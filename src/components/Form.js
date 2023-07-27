@@ -78,17 +78,17 @@ function ConnectedForm({ addContact, editContact, contacts }) {
     if (isError) {
       return;
     }
-    console.log(id, contact);
+
     if (id && contact) {
       editContact(formState);
-      axios.put("http://127.0.0.1:5000/contacts", formState, {
+      axios.put("/contacts", formState, {
         headers: {
           "x-auth-token": localStorage.getItem("token"),
         },
       });
     } else {
       addContact(formState);
-      axios.post("http://127.0.0.1:5000/contacts", formState, {
+      axios.post("/contacts", formState, {
         headers: {
           "x-auth-token": localStorage.getItem("token"),
         },
