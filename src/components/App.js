@@ -30,7 +30,7 @@ const App = () => {
           console.log(error);
         });
     }
-  }, [token, user, dispatch]);
+  }, [token, user]);
 
   return (
     <div className="App">
